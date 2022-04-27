@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.xtbd.servicegoods.mapper.GoodsDao">
+
+    <select id="getGoodsInfo" resultType="com.xtbd.Entity.Goods">
+        select * from goods where goodsId = #{goodsId}
+    </select>
+
+    <update id="changeOnSale">
+        update goods
+        set onSale = #{onSale}
+        where goodsId = #{goodsId}
+    </update>
+    <select id="getSellGoodsList" resultType="com.xtbd.Entity.Goods">
+      select * from goods where belongTo = #{sellerId};
+    </select>
+    <insert id="addGoods" parameterType="com.xtbd.Entity.Goods">
+        insert into goods(goodsName,goodsPrice,count,onSale,belongTo,imgUrls,createTime)
+        values(#{goodsName},#{goodsPrice},#{count},#{onSale},#{belongTo},#{imgUrls},now())
+    </insert>
+    <update id="updateGoods" parameterType="com.xtbd.Entity.Goods">
+        update goods
+        set goodsName=#{goodsName},goodsPrice=#{goodsPrice},count=#{count},onSale=#{onSale},imgUrls=#{imgUrls}
+        where goodsId=#{goodsId}
+    </update>
+    <delete id="deleteGoods" parameterType="String">
+        delete from goods where goodsId = #{goodsId}
+    </delete>
+
+
+    <select id="getGoodsList" resultType="com.xtbd.Entity.Goods">
+        select * from goods order by #{orderBy} #{sort}
+    </select>
+
+    <select id="getGoodsInfoArr" resultType="com.xtbd.Entity.Goods">
+        select goodsId,goodsName,goodsPrice,belongTo,onSale from goods where goodsId in (
+
+        <foreach collection="list" item="goodsId" separator="," >
+            #{goodsId}
+        </foreach>
+        )
+
+
+    </select>
+
+    <update id="updateCountAndSales">
+        update goods set `count`=`count`-#{num},sales=sales+#{num} where `count`>=#{num} and goodsId=#{goodsId}
+    </update>
+
+    <select id="searchGoods" resultType="com.xtbd.Entity.Goods">
+        select * from goods where goodsName like concat(concat('%',#{keyword}),'%');
+    </select>
+
+</mapper>

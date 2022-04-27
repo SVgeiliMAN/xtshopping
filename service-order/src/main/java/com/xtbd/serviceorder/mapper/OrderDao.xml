@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.xtbd.serviceorder.mapper.OrderDao">
+
+    <select id="getOrderListFromSeller" parameterType="String" resultType="java.util.Map">
+        select o.orderId,o.userId,o.goodsId,g.goodsName,o.price,o.num,o.createtime,o.isPay,o.address, o.status
+        from `order` o LEFT JOIN goods g on o.goodsId = g.goodsId
+        where sellerId=#{sellerId}
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+         and o.sellerDeleted != true
+    </select>
+
+    <select id="getOrderListFromUser" parameterType="String" resultType="java.util.Map">
+        select o.orderId,o.userId,o.goodsId,g.goodsName,o.price,o.num,o.createtime,o.isPay,o.address, o.status
+        from `order` o LEFT JOIN goods g on o.goodsId = g.goodsId
+        where userId=#{userId}
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+        and o.userDeleted != true
+    </select>
+
+    <insert id="generateOrder" parameterType="com.xtbd.Entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+        insert into `order`(goodsId,userId,sellerId,price,num,address) values(#{goodsId},#{userId},#{sellerId},#{price},#{num},#{address})
+    </insert>
+    <insert id="generateOrderArr" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="orderId">
+        insert into `order`(goodsId,userId,sellerId,price,num,address) values
+        <foreach collection="list" item="order"  separator=",">
+          (#{order.goodsId},#{order.userId},#{order.sellerId},#{order.price},#{order.num},#{order.address})
+        </foreach>
+    </insert>
+
+    <select id="queryOrderInfo" resultType="com.xtbd.Entity.Order">
+        select * from `order` where orderId = #{orderId}
+    </select>
+
+    <!--取消订单-->
+    <update id="cancelOrder">
+        update `order` set status = 0 where orderId=#{orderId}
+    </update>
+    <!--删除订单-->
+    <delete id="deleteOrder" parameterType="String">
+        delete from `order` where orderId = #{orderId}
+    </delete>
+
+    <update id="deleteOrderOnlySeller">
+        update `order` set sellerDeleted = '1' where orderId =#{orderId}
+    </update>
+
+    <update id="deleteOrderOnlyUser">
+        update `order` set userDeleted = '1' where orderId =#{orderId}
+    </update>
+
+</mapper>
