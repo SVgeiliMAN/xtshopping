@@ -41,6 +41,4 @@ public class ThreadFactory {
         return threadPoolExecutor.submit(callable);
     }
 
-
-
 }

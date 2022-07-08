@@ -18,11 +18,11 @@ public interface GoodsService {
 
     List<HashMap<String,Object>> searchGoods(String keyword);
 
-    boolean updateGoods(Goods goods);
+    boolean updateGoods(Goods goods,String deleteUrls,Collection files);
 
     boolean deleteGoods(String goodsId);
 
-    boolean addGoods(Goods goods);
+    boolean addGoods(Goods goods,Collection files);
 
 
 

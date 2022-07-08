@@ -53,12 +53,16 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(HttpServletResponse response, @RequestBody User user){
+        //判断用户名密码是否正确
         boolean correct = userService.login(user);
         if(correct){
+            //查询用户信息
             User userInfo = userService.getUserInfoByNickName(user);
+            //生成token
             String token = jwtUtil.getAccessToken(userInfo.getUserId().toString(),null);
+            //把token响应头中
             response.setHeader("token",token);
-
+            //返回用户信息
             return userInfo;
         }
         return null;
