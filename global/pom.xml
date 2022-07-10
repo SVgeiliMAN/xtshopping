@@ -3,7 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>com.xtbd</groupId>
+        <artifactId>xtshopping</artifactId>
+        <version>1.0.0</version>
+        <relativePath/>
+    </parent>
     <groupId>com.xtbd</groupId>
     <artifactId>global</artifactId>
     <version>1.0.0</version>
@@ -11,7 +16,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
         </dependency>
     </dependencies>
 

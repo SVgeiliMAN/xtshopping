@@ -1,12 +1,12 @@
 package com.xtbd.servicegoods.service;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.xtbd.Entity.Goods;
-import com.alibaba.dubbo.config.annotation.Service;
+import com.xtbd.service.GoodsService;
 import com.xtbd.servicegoods.mapper.GoodsDao;
 import com.xtbd.servicegoods.util.FastDFSClient;
 import com.xtbd.servicegoods.util.RedisUtil;
 import com.xtbd.servicegoods.util.ThreadFactory;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -19,20 +19,19 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import com.xtbd.service.GoodsService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Future;
 
 
-@org.springframework.stereotype.Service
-@Service(interfaceClass = GoodsService.class)
+@Service
+@DubboService
 public class GoodsServiceImpl implements GoodsService {
     @Resource
     private GoodsDao goodsDao;

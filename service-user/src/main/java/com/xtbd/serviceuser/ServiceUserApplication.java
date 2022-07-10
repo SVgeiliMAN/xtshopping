@@ -1,10 +1,12 @@
 package com.xtbd.serviceuser;
 
-import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-@EnableDubboConfiguration
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+
 @SpringBootApplication
+@EnableDiscoveryClient
 public class ServiceUserApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package com.xtbd.serviceorder.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.dubbo.config.annotation.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xtbd.Entity.Goods;
 import com.xtbd.Entity.Order;
@@ -9,6 +8,7 @@ import com.xtbd.service.GoodsService;
 import com.xtbd.service.OrderService;
 import com.xtbd.serviceorder.mapper.OrderDao;
 import com.xtbd.serviceorder.util.RedisUtil;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
@@ -16,6 +16,8 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@org.springframework.stereotype.Service
-@Service(timeout = 12000)
+@Service
+@DubboService(timeout = 12000)
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDao orderDao;

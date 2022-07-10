@@ -1,10 +1,11 @@
 package com.xtbd.provider;
 
-import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
 @SpringBootApplication
-@EnableDubboConfiguration
+@EnableDiscoveryClient
 public class UserConsumerApplication {
 
     public static void main(String[] args) {

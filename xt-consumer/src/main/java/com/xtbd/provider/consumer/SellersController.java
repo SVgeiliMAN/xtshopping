@@ -3,38 +3,32 @@ package com.xtbd.provider.consumer;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.xtbd.Entity.Goods;
 import com.xtbd.Entity.Seller;
-import com.xtbd.provider.util.FastDFSClient;
 import com.xtbd.provider.util.JwtUtil;
 import com.xtbd.provider.util.ThreadFactory;
 import com.xtbd.service.GoodsService;
 import com.xtbd.service.OrderService;
 import com.xtbd.service.SellersService;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/seller")
 public class SellersController {
 
 
-    @Reference(interfaceClass = SellersService.class,check = false)
+    @DubboReference(interfaceClass = SellersService.class,check = false)
     private SellersService sellersService;
-    @Reference(interfaceClass = OrderService.class,check = false)
+    @DubboReference(interfaceClass = OrderService.class,check = false)
     private OrderService orderService;
-    @Reference(interfaceClass = GoodsService.class,check = false)
+    @DubboReference(interfaceClass = GoodsService.class,check = false)
     private GoodsService goodsService;
 
     @Resource

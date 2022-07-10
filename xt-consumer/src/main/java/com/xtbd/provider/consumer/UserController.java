@@ -3,10 +3,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.xtbd.Entity.Order;
 import com.xtbd.Entity.User;
 import com.xtbd.provider.util.JwtUtil;
-import com.xtbd.service.GoodsService;
 import com.xtbd.service.OrderService;
 import com.xtbd.service.ShoppingTrolleyService;
 import com.xtbd.service.UserService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,17 +20,17 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @Reference(interfaceClass = UserService.class,timeout = 12000,check = false)
-    UserService userService;
+    @DubboReference(interfaceClass = UserService.class,timeout = 12000,check = false)
+    private UserService userService;
 
-    @Reference(interfaceClass = ShoppingTrolleyService.class,timeout = 12000,check = false)
-    ShoppingTrolleyService shoppingTrolleyService;
+    @DubboReference(interfaceClass = ShoppingTrolleyService.class,timeout = 12000,check = false)
+    private ShoppingTrolleyService shoppingTrolleyService;
 
-    @Reference(interfaceClass = OrderService.class,timeout = 12000,check = false)
-    OrderService orderService;
+    @DubboReference(interfaceClass = OrderService.class,timeout = 12000,check = false)
+    private OrderService orderService;
 
     @Resource
-    JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @GetMapping("/userInfo")
     public User getUserInfo(HttpServletRequest request,HttpServletResponse response){

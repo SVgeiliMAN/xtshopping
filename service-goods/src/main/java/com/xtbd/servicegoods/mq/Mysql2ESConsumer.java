@@ -1,4 +1,4 @@
-package com.xtbd.rocketmqconsumer.consumer;
+package com.xtbd.servicegoods.mq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

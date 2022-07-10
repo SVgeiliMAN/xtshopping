@@ -1,10 +1,10 @@
-package com.xtbd.rocketmqconsumer.consumer;
+package com.xtbd.servicegoods.mq;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xtbd.Entity.Order;
 import com.xtbd.service.GoodsService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -18,7 +18,7 @@ import java.io.IOException;
 public class GoodsStockRecoverConsumer implements RocketMQListener<Message> {
     @Resource
     ObjectMapper objectMapper;
-    @Reference
+    @Resource
     GoodsService goodsService;
 
     @Override

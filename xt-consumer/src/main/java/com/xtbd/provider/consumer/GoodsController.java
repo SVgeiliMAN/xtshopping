@@ -3,6 +3,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.xtbd.Entity.Goods;
 
 import com.xtbd.service.GoodsService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("/goods")
 public class GoodsController {
 
-    @Reference(interfaceClass = GoodsService.class,timeout = 12000,check = false)
+    @DubboReference(interfaceClass = GoodsService.class,timeout = 12000,check = false)
     GoodsService goodsService;
 
     @GetMapping("/goodsInfo")

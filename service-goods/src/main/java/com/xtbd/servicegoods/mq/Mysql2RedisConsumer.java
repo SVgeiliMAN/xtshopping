@@ -1,8 +1,8 @@
-package com.xtbd.rocketmqconsumer.consumer;
+package com.xtbd.servicegoods.mq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xtbd.rocketmqconsumer.util.RedisUtil;
+import com.xtbd.servicegoods.util.RedisUtil;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;

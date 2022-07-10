@@ -1,14 +1,13 @@
-package com.xtbd.rocketmqconsumer.consumer;
+package com.xtbd.serviceuser.mq;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xtbd.rocketmqconsumer.util.RedisUtil;
-import com.xtbd.service.ShoppingTrolleyService;
+import com.xtbd.serviceuser.util.RedisUtil;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 @RocketMQMessageListener(topic = "deleteFromShoppingTrolley",consumerGroup = "shoppingTrolleyGroup")
 public class DeleteFromShoppingTrolleyConsumer implements RocketMQListener<Message> {
     @Resource
-    RedisUtil redisUtil;
+    private RedisUtil redisUtil;
 
     ObjectMapper objectMapper =new ObjectMapper();
 

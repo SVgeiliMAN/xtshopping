@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocket {
     /**
      * 存放所有在线的客户端
+     * 只在单机版本有效，多实例下数字不正确
      */
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
 

@@ -1,22 +1,23 @@
 package com.xtbd.serviceshoppingtrolley.service;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.dubbo.config.annotation.Service;
 import com.xtbd.Entity.Goods;
 import com.xtbd.service.GoodsService;
 import com.xtbd.service.ShoppingTrolleyService;
 import com.xtbd.serviceshoppingtrolley.util.RedisUtil;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 
+@DubboService
 @Service
-@org.springframework.stereotype.Service
 public class ShoppingTrolleyServiceImpl implements ShoppingTrolleyService {
     @Resource
     RedisUtil redisUtil;
 
-    @Reference(interfaceClass = GoodsService.class,check = false)
+    @DubboReference(interfaceClass = GoodsService.class,check = false)
     GoodsService goodsService;
     @Override
     public List queryShoppingTrolley(String userId) {

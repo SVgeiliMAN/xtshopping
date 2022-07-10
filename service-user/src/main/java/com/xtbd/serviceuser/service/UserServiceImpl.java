@@ -5,15 +5,16 @@ import com.xtbd.Entity.User;
 import com.xtbd.service.UserService;
 import com.xtbd.serviceuser.mapper.UserDao;
 import com.xtbd.serviceuser.util.RedisUtil;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
 
-@Component
-@org.springframework.stereotype.Service
-@com.alibaba.dubbo.config.annotation.Service(interfaceClass = UserService.class,timeout = 2000)
+@Service
+@DubboService
 public class UserServiceImpl implements UserService {
 
     @Resource
