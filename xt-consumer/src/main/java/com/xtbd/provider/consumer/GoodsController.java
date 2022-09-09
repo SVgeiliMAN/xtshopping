@@ -14,16 +14,21 @@ import java.util.List;
 @RequestMapping("/goods")
 public class GoodsController {
 
-    @DubboReference(interfaceClass = GoodsService.class,timeout = 12000,check = false)
+    @DubboReference(check = false)
     GoodsService goodsService;
 
     @GetMapping("/goodsInfo")
-    public Goods getGoodsInfo(HttpServletRequest request){
+    public HashMap getGoodsInfo(HttpServletRequest request){
         String goodsId = request.getParameter("goodsId");
         if (null==goodsId||"".equals(goodsId)){
             return null;
         }
-        return goodsService.getGoodInfo(goodsId);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        List<String> imageUrlList = goodsService.getImageUrlList(Integer.valueOf(goodsId));
+        Goods goodInfo = goodsService.getGoodInfo(goodsId);
+        hashMap.put("goodsInfo",goodInfo);
+        hashMap.put("imageUrlList",imageUrlList);
+        return hashMap;
     }
 
     @GetMapping("/getGoodsList")
@@ -31,7 +36,6 @@ public class GoodsController {
         String orderBy = request.getParameter("orderBy");
         String sort = request.getParameter("sort");
         return goodsService.getGoodsList(orderBy,sort);
-
     }
     @GetMapping("/search")
     public List searchGoods(HttpServletRequest request){

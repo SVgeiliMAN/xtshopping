@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-@DubboService
+@DubboService(timeout = 12000)
 public class UserServiceImpl implements UserService {
 
     @Resource

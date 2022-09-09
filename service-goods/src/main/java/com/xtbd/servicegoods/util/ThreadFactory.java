@@ -34,7 +34,6 @@ public class ThreadFactory {
 
     public Future<?> submit(Runnable runnable){
          return threadPoolExecutor.submit(runnable);
-
     }
 
     public Future<?> submit( Callable<?> callable){

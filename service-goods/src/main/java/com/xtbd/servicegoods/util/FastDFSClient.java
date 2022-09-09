@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Component
 public class FastDFSClient {
@@ -33,6 +34,11 @@ public class FastDFSClient {
         return storePath.getFullPath();
     }
 
+    public String uploadFile(InputStream inputStream,Long fileSize,String fileExtName) throws IOException{
+        StorePath storePath = storageClient.uploadFile("group1", inputStream, fileSize, fileExtName);
+        return storePath.getFullPath();
+    }
+
     /**
      * 上传文件
      * @param file 文件对象
@@ -44,19 +50,6 @@ public class FastDFSClient {
         StorePath storePath = storageClient.uploadFile(inputStream,file.length(), FilenameUtils.getExtension(file.getName()),null);
         return getResAccessUrl(storePath);
     }
-//
-//    /**
-//     * 将一段字符串生成一个文件上传
-//     * @param content 文件内容
-//     * @param fileExtension
-//     * @return
-//     */
-//    public String uploadFile(String content, String fileExtension) {
-//        byte[] buff = content.getBytes(StandardCharsets.UTF_8);
-//        ByteArrayInputStream stream = new ByteArrayInputStream(buff);
-//        StorePath storePath = storageClient.uploadFile(stream,buff.length, fileExtension,null);
-//        return getResAccessUrl(storePath);
-//    }
 
     /**
      * 封装图片完整URL地址
@@ -67,16 +60,6 @@ public class FastDFSClient {
         return fdfsWebServer.getWebServerUrl() + storePath.getFullPath();
     }
 
-//    /**
-//     * 下载文件
-//     * @param fileUrl 文件url
-//     * @return
-//     */
-//    public byte[]  download(String fileUrl) {
-//        String group = fileUrl.substring(0, fileUrl.indexOf("/"));
-//        String path = fileUrl.substring(fileUrl.indexOf("/") + 1);
-//        return storageClient.downloadFile(group, path, new DownloadByteArray());
-//    }
 
     /**
      * 删除文件

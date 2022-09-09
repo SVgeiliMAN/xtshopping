@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
-@DubboService
+@DubboService(timeout = 12000)
 @Service
 public class ShoppingTrolleyServiceImpl implements ShoppingTrolleyService {
     @Resource
@@ -27,12 +27,13 @@ public class ShoppingTrolleyServiceImpl implements ShoppingTrolleyService {
             Set<String> goodsIds = shoppingTrolleyMap.keySet();;
             for (String goodsId:goodsIds) {
                 Goods goodsInfo =goodsService.getGoodInfo(goodsId);
+                List<String> imageUrlList = goodsService.getImageUrlList(Integer.valueOf(goodsId));
                 if (goodsInfo==null){
                     continue;
                 }
                 HashMap<String , Object> jsonMap = new HashMap<>();
                 jsonMap.put("goodsId",goodsId);
-                jsonMap.put("imgUrls",goodsInfo.getImgUrls());
+                jsonMap.put("imageUrlList",imageUrlList);
                 jsonMap.put("belongTo",goodsInfo.getBelongTo().toString());
                 jsonMap.put("goodsName",goodsInfo.getGoodsName());
                 jsonMap.put("goodsPrice",goodsInfo.getGoodsPrice().toString());

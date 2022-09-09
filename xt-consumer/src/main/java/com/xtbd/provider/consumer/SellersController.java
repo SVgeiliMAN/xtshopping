@@ -1,34 +1,36 @@
 package com.xtbd.provider.consumer;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xtbd.Entity.Goods;
 import com.xtbd.Entity.Seller;
+import com.xtbd.Entity.Image;
 import com.xtbd.provider.util.JwtUtil;
 import com.xtbd.provider.util.ThreadFactory;
 import com.xtbd.service.GoodsService;
 import com.xtbd.service.OrderService;
 import com.xtbd.service.SellersService;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 @RestController
 @RequestMapping("/seller")
-public class SellersController {
+public class SellersController{
 
 
     @DubboReference(interfaceClass = SellersService.class,check = false)
     private SellersService sellersService;
     @DubboReference(interfaceClass = OrderService.class,check = false)
     private OrderService orderService;
-    @DubboReference(interfaceClass = GoodsService.class,check = false)
+    @DubboReference(interfaceClass = GoodsService.class,check = false,protocol ="hessian")
     private GoodsService goodsService;
 
     @Resource
@@ -36,6 +38,7 @@ public class SellersController {
     @Resource
     private JwtUtil jwtUtil;
 
+    ObjectMapper objectMapper = new ObjectMapper();
     @PostMapping("/login")
     public Seller login(HttpServletRequest request, HttpServletResponse response, @RequestBody Seller seller){
         boolean correct = sellersService.login(seller);
@@ -47,6 +50,11 @@ public class SellersController {
             return sellerInfo;
         }
         return null;
+    }
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request){
+        String token = request.getHeader("token");
+        jwtUtil.inValidToken(token);
     }
     @GetMapping("/getSellerInfo")
     public Seller getSellerInfo(HttpServletRequest request){
@@ -65,8 +73,7 @@ public class SellersController {
     @PostMapping("/uploadGoods")
     public boolean uploadGoods(HttpServletRequest request, HttpServletResponse response,MultipartHttpServletRequest multipartHttpServletRequest){
         try {
-
-            Map<String,MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+            Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
             Collection<MultipartFile> files = fileMap.values();
             String goodsName = multipartHttpServletRequest.getParameter("goodsName");
             String goodsPrice = multipartHttpServletRequest.getParameter("goodsPrice");
@@ -75,10 +82,20 @@ public class SellersController {
             goods.setCount(Integer.valueOf(count));
             goods.setGoodsPrice(Double.valueOf(goodsPrice));
             goods.setGoodsName(goodsName);
-            goods.setBelongTo(Integer.valueOf(jwtUtil.getSellerId(request)));
             goods.setOnSale(true);
-
-            return goodsService.addGoods(goods,files);
+            goods.setBelongTo(Integer.valueOf(jwtUtil.getSellerId(request)));
+            ArrayList<Image> list = new ArrayList<>();
+            for (MultipartFile multipartFile : files) {
+                Image image = new Image();
+                byte[] bytes = multipartFile.getBytes();
+                long size = multipartFile.getSize();
+                String extName = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+                image.setExtName(extName);
+                image.setBytes(bytes);
+                image.setSize(size);
+                list.add(image);
+            }
+            return goodsService.addGoods(goods,list);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -95,13 +112,25 @@ public class SellersController {
             String goodsId = multipartHttpServletRequest.getParameter("goodsId");
 
             String deletedUrls = multipartHttpServletRequest.getParameter("deletedUrlArr");
+            ArrayList<Image> list = new ArrayList<>();
+
+            for (MultipartFile file : files) {
+                long size = file.getSize();
+                Image image = new Image();
+                image.setBytes(file.getBytes());
+                image.setGoodsId(Integer.valueOf(goodsId));
+                String extName = FilenameUtils.getExtension(file.getOriginalFilename());
+                image.setExtName(extName);
+                image.setSize(size);
+                list.add(image);
+            }
             Goods goods = new Goods();
             goods.setGoodsName(goodsName);
             goods.setGoodsPrice(Double.valueOf(goodsPrice));
             goods.setCount(Integer.valueOf(count));
             goods.setGoodsId(Integer.valueOf(goodsId));
             goods.setOnSale(true);
-            return goodsService.updateGoods(goods,deletedUrls,files);
+            return goodsService.updateGoods(goods,deletedUrls,list);
 
         }catch (Exception e){
             e.printStackTrace();

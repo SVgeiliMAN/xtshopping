@@ -8,6 +8,7 @@ import com.xtbd.service.GoodsService;
 import com.xtbd.service.OrderService;
 import com.xtbd.serviceorder.mapper.OrderDao;
 import com.xtbd.serviceorder.util.RedisUtil;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
@@ -15,14 +16,12 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -33,12 +32,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private RedisTemplate redisTemplate;
     @Resource
     private RedissonClient redissonClient;
     @Resource
     private RocketMQTemplate rocketmqTemplate;
 
-    @Reference(interfaceClass = GoodsService.class,timeout = 12000,check = false)
+    @DubboReference(interfaceClass = GoodsService.class,timeout = 12000,check = false)
     private GoodsService goodsService;
 
 
@@ -157,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
             Boolean isPay = orderInfo.getIsPay();
             String status = orderInfo.getStatus();
 
-            String orderJson = objectMapper.writeValueAsString(orderId);
+            String orderJson = objectMapper.writeValueAsString(orderInfo);
             Map<String,Object> map = objectMapper.readValue(orderJson, Map.class);
             //商品未付款，而且状态为进行中，添加订单过期时间（orderTTL）
             if (!isPay&&"1".equals(status)){
@@ -190,11 +192,16 @@ public class OrderServiceImpl implements OrderService {
             }
             //消息队列更改库存
             Message message = new Message();
+
+            String messageId = UUID.randomUUID().toString();
+            message.putUserProperty("messageId",messageId);
             message.setBody(objectMapper.writeValueAsBytes(order));
             SendResult result = rocketmqTemplate.syncSend("goodsStockRecoverTopic", MessageBuilder.withPayload(message).build());
             if (SendStatus.SEND_OK!=result.getSendStatus()){
                 throw new RuntimeException("库存更改消息发送失败！");
             }
+            Long aLong = redisTemplate.opsForSet().add("messageIdSet", messageId);
+            System.out.println("库存回滚消息放到redis里面了·····"+aLong);
             redisUtil.removeOrderTTL(orderId);
             lock.unlock();
         }catch (Exception e){

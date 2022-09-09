@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@SuppressWarnings("ALL")
 public class RedisUtil {
     @Resource
     RedisTemplate redisTemplate;

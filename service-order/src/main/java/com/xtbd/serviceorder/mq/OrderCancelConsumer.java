@@ -26,7 +26,6 @@ public class OrderCancelConsumer implements RocketMQListener<Message> {
         Map<String, Object> orderInfo = orderService.queryOrderInfo(orderId);
         if (orderInfo==null){
             return;
-
         }
         Boolean isPay =(Boolean)orderInfo.get("isPay");
         if (isPay){

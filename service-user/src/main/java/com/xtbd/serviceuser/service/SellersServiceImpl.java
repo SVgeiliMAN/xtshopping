@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 
 
 @Service
-@DubboService
+@DubboService(timeout = 12000)
 public class SellersServiceImpl implements SellersService {
 
     @Resource

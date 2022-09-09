@@ -59,14 +59,18 @@ public class JwtUtil {
     }
 
     public String getUserId(String token){
-        Claims claims = Jwts.parser().setSigningKey("xtbdxtbd").parseClaimsJws(token.trim()).getBody();
-        return (String)claims.get("userId");
+        try {
+            Claims claims = Jwts.parser().setSigningKey("xtbdxtbd").parseClaimsJws(token.trim()).getBody();
+            return (String)claims.get("userId");
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
     public String getUserId(HttpServletRequest request){
         try {
             String token = request.getHeader("token");
-            Claims claims = Jwts.parser().setSigningKey("xtbdxtbd").parseClaimsJws(token.trim()).getBody();
-            return (String)claims.get("userId");
+            return getUserId(token);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -85,12 +89,15 @@ public class JwtUtil {
     public String getSellerId(HttpServletRequest request){
         try {
             String token = request.getHeader("token");
-            Claims claims = Jwts.parser().setSigningKey("xtbdxtbd").parseClaimsJws(token.trim()).getBody();
-            return (String)claims.get("sellerId");
+            return getSellerId(token);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
+    }
+    public void inValidToken(String token){
+        Claims claims = Jwts.parser().setSigningKey("xtbdxtbd").parseClaimsJws(token.trim()).getBody();
+        claims.setExpiration(new Date());
     }
 
 }

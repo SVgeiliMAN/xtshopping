@@ -1,6 +1,7 @@
 package com.xtbd.provider.consumer;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.xtbd.Entity.Order;
+import com.xtbd.Entity.Seller;
 import com.xtbd.Entity.User;
 import com.xtbd.provider.util.JwtUtil;
 import com.xtbd.service.OrderService;
@@ -66,6 +67,12 @@ public class UserController {
             return userInfo;
         }
         return null;
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request){
+        String token = request.getHeader("token");
+        jwtUtil.inValidToken(token);
     }
 
 

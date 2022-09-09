@@ -9,7 +9,20 @@
     <select id="getGoodsInfo" resultType="com.xtbd.Entity.Goods">
         select * from goods where goodsId = #{goodsId}
     </select>
+    <select id="getGoodsImages" resultType="String">
+        select imageUrl from images where goodsId=#{goodsId}
+    </select>
+    <delete id="deleteGoodsImages">
+        delete from images where goodsId=#{goodsId}
+    </delete>
+    <delete id="deleteImages">
+        delete from images where goodsId=#{goodsId} and imageUrl in (
 
+        <foreach collection="imageUrlList" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
     <update id="changeOnSale">
         update goods
         set onSale = #{onSale}
@@ -18,9 +31,16 @@
     <select id="getSellGoodsList" resultType="com.xtbd.Entity.Goods">
       select * from goods where belongTo = #{sellerId};
     </select>
-    <insert id="addGoods" parameterType="com.xtbd.Entity.Goods">
-        insert into goods(goodsName,goodsPrice,count,onSale,belongTo,imgUrls,createTime)
-        values(#{goodsName},#{goodsPrice},#{count},#{onSale},#{belongTo},#{imgUrls},now())
+    <insert id="addGoods" parameterType="com.xtbd.Entity.Goods" useGeneratedKeys="true" keyProperty="goodsId">
+        insert into goods(goodsName,goodsPrice,count,onSale,belongTo,createTime)
+        values(#{goodsName},#{goodsPrice},#{count},#{onSale},#{belongTo},now())
+    </insert>
+    <insert id="addGoodsImages">
+        insert into images(goodsId,imageUrl) values
+        <foreach collection="imageUrlList" item="item" separator=",">
+            (#{goodsId},#{item})
+        </foreach>
+
     </insert>
     <update id="updateGoods" parameterType="com.xtbd.Entity.Goods">
         update goods

@@ -55,6 +55,7 @@ public class Mysql2ESConsumer implements RocketMQListener<String> {
             }
             if (option.equals(Option.UPDATE)){
                 ArrayList<HashMap> dataArr = (ArrayList) map.get("data");
+                //这里可以根据更新日期做幂等处理。
                 for (HashMap hashMap : dataArr) {
                     String goodsId = hashMap.get("goodsId").toString();
                     Document document = Document.create().fromJson(objectMapper.writeValueAsString(hashMap));

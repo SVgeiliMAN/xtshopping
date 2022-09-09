@@ -1,7 +1,9 @@
 package com.xtbd.service;
 
 import com.xtbd.Entity.Goods;
+import com.xtbd.Entity.Image;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +20,11 @@ public interface GoodsService {
 
     List<HashMap<String,Object>> searchGoods(String keyword);
 
-    boolean updateGoods(Goods goods,String deleteUrls,Collection files);
+    boolean updateGoods(Goods goods,String deleteUrls,List<Image> list);
 
     boolean deleteGoods(String goodsId);
 
-    boolean addGoods(Goods goods,Collection files);
+    boolean addGoods(Goods goods,List<Image> list);
 
 
 
@@ -30,5 +32,7 @@ public interface GoodsService {
 
     boolean changeOnSale(String goodsId, String onSale);
 
-    List<Goods> getGoodsInfoArr(List goodsIdArr);
+    List<Goods> getGoodsInfoArr(List<Integer> goodsIdArr);
+
+    List<String>  getImageUrlList(Integer goodsId);
 }

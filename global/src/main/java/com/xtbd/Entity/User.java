@@ -10,7 +10,6 @@ public class User implements Serializable {
     Integer userId;
     String nickName;
     String password;
-
     String phone;
     String identity;
     ArrayList<Integer> shoppingTrolley;

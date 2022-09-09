@@ -4,6 +4,8 @@ import com.xtbd.provider.interceptor.SellerLoginInterceptor;
 import com.xtbd.provider.interceptor.UserLoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,10 +30,10 @@ public class WebConfigure implements WebMvcConfigurer {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(userLoginInterceptor)
                         .addPathPatterns("/user/**")
-                        .excludePathPatterns("/user/login","/user/register");
+                        .excludePathPatterns("/user/login","/user/register","/user/logout");
                 registry.addInterceptor(sellerLoginInterceptor)
                         .addPathPatterns("/seller/**")
-                        .excludePathPatterns("/seller/login","/seller/register","/seller/uploadGoods");
+                        .excludePathPatterns("/seller/login","/seller/register","/seller/logout");
             }
 
             @Override
@@ -55,10 +57,21 @@ public class WebConfigure implements WebMvcConfigurer {
 
 
 
+
     }
     //websocket配置
     @Bean
     public ServerEndpointExporter serverEndpoint() {
         return new ServerEndpointExporter();
     }
+    @Bean
+    //文件上传解析器
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
+        //resolveLazily属性启用是为了推迟文件解析，以在在UploadAction中捕获文件大小异常
+        resolver.setResolveLazily(false);
+        return resolver;
+    }
+
 }

@@ -3,7 +3,9 @@ package com.xtbd.Entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -18,7 +20,6 @@ public class Goods implements Serializable {
     Integer sales;
     Date    createTime;
     Date    updateTime;
-    String  imgUrls;
     String  unit;
     //折扣
     Double  discount;
