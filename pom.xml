@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-<!--    <modules>-->
+    <modules>
 <!--        <module>global</module>-->
-<!--        <module>service-goods</module>-->
+        <module>service-goods</module>
 <!--        <module>service-order</module>-->
 <!--        <module>service-user</module>-->
 <!--        <module>service-shoppingtrolley</module>-->
 <!--        <module>xt-consumer</module>-->
-<!--    </modules>-->
+    </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -23,6 +23,22 @@
     <name>xtshopping</name>
     <properties>
         <java.version>1.8</java.version>
+<!--        mysql-->
+        <mysql.address>jdbc:mysql://124.221.229.69:3306/xtbd?serverTimezone=GMT%2B8&amp;useSSL=false</mysql.address>
+        <mysql.username>root</mysql.username>
+        <mysql.password>xtbdxtbd</mysql.password>
+        <mysql.driver>com.mysql.cj.jdbc.Driver</mysql.driver>
+<!--        redis-->
+        <redis.address>124.221.229.69</redis.address>
+        <redis.port>6379</redis.port>
+        <redis.password>xtbd</redis.password>
+<!--        nacos-->
+        <nacos.config.address>43.138.59.119:8848</nacos.config.address>
+        <nacos.discovery.address>43.138.59.119:8848</nacos.discovery.address>
+<!--        rocketmq-->
+        <rocketmq.name-server.address>120.55.183.182:9876;124.221.229.69:9876</rocketmq.name-server.address>
+<!--        elasticsearch-->
+        <es.address>43.138.59.119:9200</es.address>
     </properties>
 
     <dependencyManagement>
@@ -128,5 +144,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <profiles>
+
+    </profiles>
 
 </project>

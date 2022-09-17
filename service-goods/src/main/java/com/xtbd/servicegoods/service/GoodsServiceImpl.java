@@ -50,7 +50,6 @@ public class GoodsServiceImpl implements GoodsService {
     private String imgAddress;
     @Override
     public boolean updateCountAndSales(String goodsId, Integer num) {
-
         return goodsDao.updateCountAndSales(goodsId,num);
     }
 
@@ -70,7 +69,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
     @Override
     public List<String>  getImageUrlList(Integer goodsId){
-        return goodsDao.getGoodsImages(String.valueOf(goodsId));
+        return goodsDao.getGoodsImages(goodsId);
     }
 
     @Override
@@ -80,7 +79,6 @@ public class GoodsServiceImpl implements GoodsService {
             if (null==keyword||"".equals(keyword.trim())){
                 return null;
             }
-
             MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("goodsName", keyword);
             NativeSearchQuery query = new NativeSearchQueryBuilder()
                     .withQuery(queryBuilder)
@@ -91,7 +89,7 @@ public class GoodsServiceImpl implements GoodsService {
 
                 HashMap<String ,Object> goods = hashMapSearchHit.getContent();
                 Object goodsId = goods.get("goodsId");
-                List<String> goodsImages = goodsDao.getGoodsImages(goodsId.toString());
+                List<String> goodsImages = goodsDao.getGoodsImages((int)goodsId);
                 goods.put("imageUrlList",goodsImages);
                 List<String> goodsNameArr= hashMapSearchHit.getHighlightField("goodsName");
                 goods.put("goodsName",goodsNameArr.get(0));
@@ -102,7 +100,6 @@ public class GoodsServiceImpl implements GoodsService {
             e.printStackTrace();
         }
         return result;
-
     }
 
 
@@ -110,7 +107,6 @@ public class GoodsServiceImpl implements GoodsService {
     public List<HashMap<String,Object>> getGoodsList(String orderBy,String sort) {
         ArrayList<HashMap<String,Object>> result = new ArrayList<>();
         try {
-
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("onSale", "1"));
             NativeSearchQuery query = new NativeSearchQuery(queryBuilder);
             if ("asc".equals(sort)){
@@ -121,10 +117,9 @@ public class GoodsServiceImpl implements GoodsService {
             }
             SearchHits<HashMap> goodsSearchHits = esTemplate.search(query, HashMap.class, IndexCoordinates.of("goods"));
             for (SearchHit<HashMap> goodsSearchHit : goodsSearchHits) {
-
                 HashMap<String, Object> goods = goodsSearchHit.getContent();
                 String goodsId = goods.get("goodsId").toString();
-                List<String> goodsImages = goodsDao.getGoodsImages(goodsId);
+                List<String> goodsImages = goodsDao.getGoodsImages(Integer.valueOf(goodsId));
                 goods.put("imageUrlList",goodsImages);
                 result.add(goods);
             }
@@ -138,7 +133,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods> getSellGoodsList(String sellerId) {
-        return goodsDao.getSellGoodsList(sellerId);
+        return goodsDao.getSellGoodsList(Integer.valueOf(sellerId));
     }
 
     @Override
@@ -196,9 +191,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     @Transactional
     public boolean deleteGoods(String goodsId) {
-        List<String> goodsImages = goodsDao.getGoodsImages(goodsId);
-        goodsDao.deleteGoodsImages(goodsId);
-        goodsDao.deleteGoods(goodsId);
+        List<String> goodsImages = goodsDao.getGoodsImages(Integer.valueOf(goodsId));
+        goodsDao.deleteGoodsImages(Integer.valueOf(goodsId));
+        goodsDao.deleteGoods(Integer.valueOf(goodsId));
         threadFactory.execute(()->{
                 for (String url : goodsImages) {
                     fastDFSClient.deleteFile(url);
@@ -258,7 +253,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public boolean changeOnSale(String goodsId, String onSale) {
-        return goodsDao.changeOnSale(goodsId,onSale);
+        return goodsDao.changeOnSale(Integer.valueOf(goodsId),onSale);
     }
 
     @Override

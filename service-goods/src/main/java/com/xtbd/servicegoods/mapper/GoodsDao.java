@@ -18,20 +18,20 @@ public interface GoodsDao {
 
     List<Goods> getGoodsInfoArr(List<String> goodsIdArr);
 
-    List<Goods> getSellGoodsList(String userId);
+    List<Goods> getSellGoodsList(Integer userId);
 
     boolean updateGoods(Goods goods);
 
-    boolean deleteGoods(String goodsId);
+    boolean deleteGoods(Integer goodsId);
 
     boolean addGoods(Goods goods);
     boolean addGoodsImages(Integer goodsId,@Param("imageUrlList") List<String> imgUrlList);
 
-    boolean changeOnSale(String goodsId, String onSale);
+    boolean changeOnSale(Integer goodsId, String onSale);
 
-    List<String> getGoodsImages(String goodsId);
+    List<String> getGoodsImages(Integer goodsId);
 
-    boolean deleteGoodsImages(String goodsId);
+    boolean deleteGoodsImages(Integer goodsId);
     boolean deleteImages(Integer goodsId,@Param("imageUrlList") List<String> imageUrlList);
 
 }
