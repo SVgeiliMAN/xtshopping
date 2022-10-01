@@ -23,7 +23,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.*;
@@ -248,7 +247,6 @@ public class GoodsServiceImpl implements GoodsService {
             e.printStackTrace();
         }
         return false;
-
     }
 
     @Override

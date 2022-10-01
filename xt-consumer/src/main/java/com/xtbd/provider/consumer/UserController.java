@@ -48,6 +48,7 @@ public class UserController {
 
     @PostMapping("/register")
     public boolean addUser(@RequestBody User user){
+
         return userService.addUser(user);
 
     }

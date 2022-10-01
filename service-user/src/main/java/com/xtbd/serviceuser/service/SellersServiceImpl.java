@@ -17,6 +17,16 @@ public class SellersServiceImpl implements SellersService {
     SellersDao sellersDao;
 
     @Override
+    public boolean addSeller(Seller seller){
+        try {
+            sellersDao.addSeller(seller);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+    @Override
     public boolean login(Seller seller) {
         return sellersDao.findSeller(seller);
     }

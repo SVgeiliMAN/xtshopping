@@ -29,7 +29,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        return userDao.addUser(user);
+
+        try {
+            userDao.addUser(user);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     @Override

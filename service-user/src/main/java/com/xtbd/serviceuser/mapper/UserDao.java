@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserDao {
-    boolean addUser(User user);
+    Integer addUser(User user);
 
     boolean findUser(User user);
 

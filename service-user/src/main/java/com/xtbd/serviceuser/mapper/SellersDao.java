@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface SellersDao {
 
-
+    int addSeller(Seller seller);
     boolean findSeller(Seller seller);
 
     Seller getSellerInfoByNickName(Seller seller);

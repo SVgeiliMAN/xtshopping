@@ -6,6 +6,9 @@
 		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
 <mapper namespace="com.xtbd.serviceuser.mapper.SellersDao">
 
+    <insert id="addSeller">
+        insert into seller(nickName,phone,password) values(#{nickName},#{phone},#{password})
+    </insert>
     <select id="findSeller" resultType="boolean">
         select count(1) from seller where nickName=#{nickName} and password=#{password}
     </select>

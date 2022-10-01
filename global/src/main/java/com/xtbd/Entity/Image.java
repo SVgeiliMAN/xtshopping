@@ -10,7 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image implements Serializable {
-
     Integer id;
     Integer goodsId;
     String imageUrl;

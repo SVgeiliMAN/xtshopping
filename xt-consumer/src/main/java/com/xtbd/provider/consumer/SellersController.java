@@ -39,6 +39,10 @@ public class SellersController{
     private JwtUtil jwtUtil;
 
     ObjectMapper objectMapper = new ObjectMapper();
+    @PostMapping("register")
+    public boolean register(@RequestBody Seller seller){
+        return sellersService.addSeller(seller);
+    }
     @PostMapping("/login")
     public Seller login(HttpServletRequest request, HttpServletResponse response, @RequestBody Seller seller){
         boolean correct = sellersService.login(seller);

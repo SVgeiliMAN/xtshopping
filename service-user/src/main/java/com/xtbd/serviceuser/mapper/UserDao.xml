@@ -9,7 +9,7 @@
 
     <!--</select>-->
     <insert id="addUser">
-        insert into user(nickName,phone,`identity`) values(#{nickName},#{phone},#{identity})
+        insert into user(nickName,phone,password) values(#{nickName},#{phone},#{password})
     </insert>
 
     <select id="findUser" resultType="boolean">

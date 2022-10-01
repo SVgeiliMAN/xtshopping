@@ -47,7 +47,7 @@
         set goodsName=#{goodsName},goodsPrice=#{goodsPrice},count=#{count},onSale=#{onSale},imgUrls=#{imgUrls}
         where goodsId=#{goodsId}
     </update>
-    <delete id="deleteGoods" parameterType="String">
+    <delete id="deleteGoods">
         delete from goods where goodsId = #{goodsId}
     </delete>
 
