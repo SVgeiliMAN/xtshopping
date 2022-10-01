@@ -31,7 +31,7 @@
 <!--        redis-->
         <redis.address>124.221.229.69</redis.address>
         <redis.port>6379</redis.port>
-        <redis.password>xtbdxtbd</redis.password>
+        <redis.password>xtbd</redis.password>
 <!--        nacos-->
         <nacos.config.address>nacos://120.55.183.182:8848</nacos.config.address>
         <nacos.discovery.address>nacos://120.55.183.182:8848</nacos.discovery.address>
